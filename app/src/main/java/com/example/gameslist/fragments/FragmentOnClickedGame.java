@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,8 +41,6 @@ public class FragmentOnClickedGame extends Fragment {
     VideoView trailer;
 
     ImageView imageView;
-
-    String videourl;
 
     private static ArrayList<String> arrvideos = new ArrayList<>();
 
@@ -84,6 +87,45 @@ public class FragmentOnClickedGame extends Fragment {
         publisher.setText(specificGame.getPublisher());
         dev.setText(specificGame.getDeveloper());
         date.setText(specificGame.getReleaseDate());
+
+        String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", game);
+
+        try {
+            URL url = new URL(sURL);
+
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            JsonParser jp = new JsonParser();
+
+            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+
+
+            JsonObject rootobj = root.getAsJsonObject();
+
+            JsonArray jsonArr = rootobj.get("items").getAsJsonArray();
+
+            JsonObject id = jsonArr.get(0).getAsJsonObject();
+
+            JsonObject idObj = id.get("id").getAsJsonObject();
+
+
+
+            String videoId = String.valueOf(idObj.get("videoId"));
+
+            String videoUrl = String.format("https://www.youtube.com/watch?v=%s", videoId).replace("\"", "");
+
+            Log.d("ffsd", videoUrl);
+
+
+
+
+
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         String imageUrl = specificGame.getImageGame();
