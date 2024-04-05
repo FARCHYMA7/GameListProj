@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,6 +24,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,9 +41,7 @@ public class FragmentOnClickedGame extends Fragment {
     TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
     VideoView trailer;
 
-    ImageView imageView;
-
-    String videourl;
+    WebView webView;
 
     private static ArrayList<String> arrvideos = new ArrayList<>();
 
@@ -65,7 +69,7 @@ public class FragmentOnClickedGame extends Fragment {
         date = view.findViewById(R.id.dialog_date);
         devTitle = view.findViewById(R.id.dialog_titleDev);
         dev = view.findViewById(R.id.dialog_dev);
-        imageView = view.findViewById(R.id.dialog_imageGame);
+        webView = view.findViewById(R.id.dialog_webView);
 
         String game = getArguments().getString("gameName");
         gameTitle.setText(game);
@@ -85,11 +89,55 @@ public class FragmentOnClickedGame extends Fragment {
         dev.setText(specificGame.getDeveloper());
         date.setText(specificGame.getReleaseDate());
 
+        String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", game);
 
-        String imageUrl = specificGame.getImageGame();
-        Glide.with(requireContext()).load(imageUrl).into(imageView);
+        try {
+            URL url = new URL(sURL);
 
-        return view;
+            HttpURLConnection request = (HttpURLConnection) url.openConnection();
+            request.connect();
+
+            JsonParser jp = new JsonParser();
+
+            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
+
+
+            JsonObject rootobj = root.getAsJsonObject();
+
+            JsonArray jsonArr = rootobj.get("items").getAsJsonArray();
+
+            JsonObject id = jsonArr.get(0).getAsJsonObject();
+
+            JsonObject idObj = id.get("id").getAsJsonObject();
+
+
+
+            String videoId = String.valueOf(idObj.get("videoId"));
+
+            // String videoUrl = String.format("https://www.youtube.com/watch?v=%s", videoId).replace("\"", "");
+
+
+            WebSettings webSettings = webView.getSettings();
+            webSettings.setJavaScriptEnabled(true); // Enable JavaScript
+
+            String embedURL = String.format("https://www.youtube.com/embed/%s", videoId).replace("\"", "");
+
+            String frameVideo = String.format("<html><body><iframe width=\"100%%\" height=\"100%%\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>", embedURL);
+
+            webView.loadData(frameVideo, "text/html", "utf-8");
+
+            return view;
+
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+//        String imageUrl = specificGame.getImageGame();
+//        Glide.with(requireContext()).load(imageUrl).into(imageView);
+
 
 
     }
