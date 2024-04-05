@@ -17,7 +17,17 @@ import com.bumptech.glide.Glide;
 import com.example.gameslist.R;
 import com.example.gameslist.models.DataModel;
 import com.example.gameslist.services.DataService;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class FragmentOnClickedGame extends Fragment {
@@ -27,6 +37,9 @@ public class FragmentOnClickedGame extends Fragment {
 
     ImageView imageView;
 
+    String videourl;
+
+    private static ArrayList<String> arrvideos = new ArrayList<>();
 
 
     @Override
@@ -39,7 +52,7 @@ public class FragmentOnClickedGame extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_on_clicked_game, container, false);
+        View view = inflater.inflate(R.layout.fragment_on_clicked_game, container, false);
 
         gameTitle = view.findViewById(R.id.dialog_GameName);
         descTitle = view.findViewById(R.id.dialog_titleDesc);
@@ -52,15 +65,14 @@ public class FragmentOnClickedGame extends Fragment {
         date = view.findViewById(R.id.dialog_date);
         devTitle = view.findViewById(R.id.dialog_titleDev);
         dev = view.findViewById(R.id.dialog_dev);
-        imageView = view.findViewById(R.id.dialog_imageView);
+        imageView = view.findViewById(R.id.dialog_imageGame);
 
         String game = getArguments().getString("gameName");
         gameTitle.setText(game);
         ArrayList<DataModel> localDataSet = DataService.getArrGames();
         DataModel specificGame = null;
 
-        for(DataModel dm : localDataSet)
-        {
+        for (DataModel dm : localDataSet) {
             if (dm.getTitle() == game) {
                 specificGame = dm;
                 break;
@@ -73,9 +85,12 @@ public class FragmentOnClickedGame extends Fragment {
         dev.setText(specificGame.getDeveloper());
         date.setText(specificGame.getReleaseDate());
 
+
         String imageUrl = specificGame.getImageGame();
         Glide.with(requireContext()).load(imageUrl).into(imageView);
 
         return view;
+
+
     }
 }

@@ -18,7 +18,7 @@
 
 
     <ImageView
-        android:id="@+id/dialog_imageView"
+        android:id="@+id/dialog_imageGame"
         android:layout_width="350dp"
         android:layout_height="200dp"
         android:layout_marginTop="10dp"
