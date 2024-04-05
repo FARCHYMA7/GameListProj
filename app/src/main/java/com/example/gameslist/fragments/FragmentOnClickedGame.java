@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class FragmentOnClickedGame extends Fragment {
     TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
     VideoView trailer;
 
-    ImageView imageView;
+    WebView webView;
 
     private static ArrayList<String> arrvideos = new ArrayList<>();
 
@@ -68,7 +69,7 @@ public class FragmentOnClickedGame extends Fragment {
         date = view.findViewById(R.id.dialog_date);
         devTitle = view.findViewById(R.id.dialog_titleDev);
         dev = view.findViewById(R.id.dialog_dev);
-        imageView = view.findViewById(R.id.dialog_imageGame);
+        webView = view.findViewById(R.id.dialog_webView);
 
         String game = getArguments().getString("gameName");
         gameTitle.setText(game);
@@ -113,13 +114,19 @@ public class FragmentOnClickedGame extends Fragment {
 
             String videoId = String.valueOf(idObj.get("videoId"));
 
-            String videoUrl = String.format("https://www.youtube.com/watch?v=%s", videoId).replace("\"", "");
-
-            Log.d("ffsd", videoUrl);
+            // String videoUrl = String.format("https://www.youtube.com/watch?v=%s", videoId).replace("\"", "");
 
 
+            WebSettings webSettings = webView.getSettings();
+            webSettings.setJavaScriptEnabled(true); // Enable JavaScript
 
+            String embedURL = String.format("https://www.youtube.com/embed/%s", videoId).replace("\"", "");
 
+            String frameVideo = String.format("<html><body><iframe width=\"100%%\" height=\"100%%\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>", embedURL);
+
+            webView.loadData(frameVideo, "text/html", "utf-8");
+
+            return view;
 
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -128,10 +135,9 @@ public class FragmentOnClickedGame extends Fragment {
         }
 
 
-        String imageUrl = specificGame.getImageGame();
-        Glide.with(requireContext()).load(imageUrl).into(imageView);
+//        String imageUrl = specificGame.getImageGame();
+//        Glide.with(requireContext()).load(imageUrl).into(imageView);
 
-        return view;
 
 
     }
