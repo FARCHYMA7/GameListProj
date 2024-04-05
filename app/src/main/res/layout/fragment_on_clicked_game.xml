@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragments.FragmentOnClickedGame" >
+
+    <TextView
+        android:id="@+id/dialog_GameName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:text="TextView" />
+
+
+    <ImageView
+        android:id="@+id/dialog_imageView"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/dialog_titleDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Short Description" />
+
+    <TextView
+        android:id="@+id/dialog_gameDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="..."
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/dialog_titleGen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Genre:" />
+
+    <TextView
+        android:id="@+id/dialog_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="..." />
+
+
+    <TextView
+        android:id="@+id/dialog_titlePub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Publisher:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/dialog_publisher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="..." />
+
+    <TextView
+        android:id="@+id/dialog_titleDev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="Developer:" />
+
+    <TextView
+        android:id="@+id/dialog_dev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="..." />
+
+
+    <TextView
+        android:id="@+id/dialog_titleDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Release Date:"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+
+    <TextView
+        android:id="@+id/dialog_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="..." />
+
+
+
+
+
+
+
+
+
+</LinearLayout>

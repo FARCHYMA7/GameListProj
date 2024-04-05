@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "479873600540",
+    "project_id": "gameslist-d8b1f",
+    "storage_bucket": "gameslist-d8b1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479873600540:android:46768e1836cd2a41e0e3d9",
+        "android_client_info": {
+          "package_name": "com.example.gameslist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBu8vAOqLXehYvJsMRDoBIvWHRxW80v634"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

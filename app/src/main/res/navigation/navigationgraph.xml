@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigationgraph"
+    app:startDestination="@id/fragmentLogin3">
+    <fragment
+        android:id="@+id/fragmentLogin3"
+        android:name="com.example.gameslist.fragments.FragmentLogin"
+        android:label="frgament_login"
+        tools:layout="@layout/frgament_login" >
+        <action
+            android:id="@+id/action_fragmentLogin3_to_fragmentRegister3"
+            app:destination="@id/fragmentRegister3" />
+        <action
+            android:id="@+id/action_fragmentLogin3_to_fragmentGamelist2"
+            app:destination="@id/fragmentGamelist2" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentRegister3"
+        android:name="com.example.gameslist.fragments.FragmentRegister"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_fragmentRegister3_to_fragmentLogin3"
+            app:destination="@id/fragmentLogin3" />
+        <action
+            android:id="@+id/action_fragmentRegister3_to_fragmentGamelist2"
+            app:destination="@id/fragmentGamelist2" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentGamelist2"
+        android:name="com.example.gameslist.fragments.FragmentGamelist"
+        android:label="fragment_gamelist"
+        tools:layout="@layout/fragment_gamelist" >
+        <action
+            android:id="@+id/action_fragmentGamelist2_to_fragmentLogin3"
+            app:destination="@id/fragmentLogin3" />
+        <action
+            android:id="@+id/action_fragmentGamelist2_to_fragmentMyList"
+            app:destination="@id/fragmentMyList" />
+        <action
+            android:id="@+id/action_fragmentGamelist2_to_fragmentFilter"
+            app:destination="@id/fragmentFilter" />
+        <action
+            android:id="@+id/action_fragmentGamelist2_to_fragmentOnClickedGame"
+            app:destination="@id/fragmentOnClickedGame" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentMyList"
+        android:name="com.example.gameslist.fragments.FragmentMyList"
+        android:label="fragment_my_list"
+        tools:layout="@layout/fragment_my_list" >
+        <action
+            android:id="@+id/action_fragmentMyList_to_fragmentOnClickedGame"
+            app:destination="@id/fragmentOnClickedGame" />
+        <action
+            android:id="@+id/action_fragmentMyList_to_fragmentLogin3"
+            app:destination="@id/fragmentLogin3" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentFilter"
+        android:name="com.example.gameslist.fragments.FragmentFilter"
+        android:label="fragment_filter"
+        tools:layout="@layout/fragment_filter" />
+    <fragment
+        android:id="@+id/fragmentOnClickedGame"
+        android:name="com.example.gameslist.fragments.FragmentOnClickedGame"
+        android:label="fragment_on_clicked_game"
+        tools:layout="@layout/fragment_on_clicked_game" />
+</navigation>
