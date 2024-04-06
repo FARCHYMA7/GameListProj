@@ -44,6 +44,41 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         this.currentUser = currentUser;
         localDataSet = new ArrayList<>();
 
+        reference = FirebaseDatabase.getInstance().getReference("users");
+        checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
+
+        checkUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int i = 0;
+
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    while (item.child("dataSet").child(String.valueOf(i)).exists()) {
+                        String title = item.child("dataSet").child(String.valueOf(i)).child("title").getValue(String.class);
+                        String image = item.child("dataSet").child(String.valueOf(i)).child("imageGame").getValue(String.class);
+                        String description = item.child("dataSet").child(String.valueOf(i)).child("shortDescription").getValue(String.class);
+                        String gameUrl = item.child("dataSet").child(String.valueOf(i)).child("gameUrl").getValue(String.class);
+                        String genre = item.child("dataSet").child(String.valueOf(i)).child("genre").getValue(String.class);
+                        String platform = item.child("dataSet").child(String.valueOf(i)).child("platform").getValue(String.class);
+                        String publisher = item.child("dataSet").child(String.valueOf(i)).child("publisher").getValue(String.class);
+                        String developer = item.child("dataSet").child(String.valueOf(i)).child("developer").getValue(String.class);
+                        String releaseDate = item.child("dataSet").child(String.valueOf(i)).child("releaseDate").getValue(String.class);
+                        localDataSet.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate));
+                        //adapter.notifyItemInserted(localLikedGames.size() - 1);
+                        i++;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -73,7 +108,17 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                     Bundle bundle = new Bundle();
                     bundle.putString("gameName", dataSet.get(getAdapterPosition()).getTitle());
-                    Navigation.findNavController(itemView).navigate(R.id.action_fragmentGamelist2_to_fragmentOnClickedGame,bundle);
+
+                    try{
+
+                        Navigation.findNavController(itemView).navigate(R.id.action_fragmentGamelist2_to_fragmentOnClickedGame,bundle);
+                    }catch (Exception e) {
+                        Navigation.findNavController(itemView).navigate(R.id.action_fragmentMyList_to_fragmentOnClickedGame,bundle);
+                    }
+
+
+
+
 
 
                 }
