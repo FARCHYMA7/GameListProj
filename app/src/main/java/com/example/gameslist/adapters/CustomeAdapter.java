@@ -44,7 +44,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         this.currentUser = currentUser;
         localDataSet = new ArrayList<>();
 
-
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +72,13 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                     Bundle bundle = new Bundle();
                     bundle.putString("gameName", dataSet.get(getAdapterPosition()).getTitle());
-                    Navigation.findNavController(itemView).navigate(R.id.action_fragmentGamelist2_to_fragmentOnClickedGame,bundle);
+
+                    try{
+
+                        Navigation.findNavController(itemView).navigate(R.id.action_fragmentGamelist2_to_fragmentOnClickedGame,bundle);
+                    }catch (Exception e) {
+                        Navigation.findNavController(itemView).navigate(R.id.action_fragmentMyList_to_fragmentOnClickedGame,bundle);
+                    }
 
 
                 }

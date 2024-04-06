@@ -74,20 +74,26 @@ public class FragmentOnClickedGame extends Fragment {
         String game = getArguments().getString("gameName");
         gameTitle.setText(game);
         ArrayList<DataModel> localDataSet = DataService.getArrGames();
-        DataModel specificGame = null;
+        DataModel specificGame = localDataSet.get(0);
 
         for (DataModel dm : localDataSet) {
-            if (dm.getTitle() == game) {
+            if (dm.getTitle().compareTo(game) == 0) {
                 specificGame = dm;
                 break;
             }
         }
-        assert specificGame != null;
-        desc.setText(specificGame.getShortDescription());
-        genre.setText(specificGame.getGenre());
-        publisher.setText(specificGame.getPublisher());
-        dev.setText(specificGame.getDeveloper());
-        date.setText(specificGame.getReleaseDate());
+        try {
+            desc.setText(specificGame.getShortDescription());
+            genre.setText(specificGame.getGenre());
+            publisher.setText(specificGame.getPublisher());
+            dev.setText(specificGame.getDeveloper());
+            date.setText(specificGame.getReleaseDate());
+        }
+        catch (Exception e) {
+            Toast.makeText(getActivity(), "List Error",
+                    Toast.LENGTH_SHORT).show();
+        }
+
 
         String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", game);
 
