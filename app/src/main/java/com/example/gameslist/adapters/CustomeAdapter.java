@@ -127,7 +127,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                     int i = 0;
 
                     reference = FirebaseDatabase.getInstance().getReference("users");
-                    checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
+                    //checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
 
 
                     if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {

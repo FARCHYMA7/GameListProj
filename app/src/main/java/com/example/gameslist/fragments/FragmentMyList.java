@@ -38,8 +38,7 @@ public class FragmentMyList extends Fragment {
     static ArrayList<DataModel> localDataSet;
     CustomeAdapter adapter;
     Button btn_logout;
-    Button btn_addItem;
-    Button btn_saveItems;
+    Button btn_reset;
     TextView userName;
     String currentUser;
     DatabaseReference reference;
@@ -102,6 +101,7 @@ public class FragmentMyList extends Fragment {
 
 
         btn_logout = view.findViewById(R.id.btn_logout);
+        btn_reset = view.findViewById(R.id.btn_reset);
         userName = view.findViewById(R.id.textView_user);
 
 
@@ -120,6 +120,17 @@ public class FragmentMyList extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentLogin3);
+            }
+        });
+
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reference = FirebaseDatabase.getInstance().getReference("users");
+                reference.child(currentUser).child("dataSet").removeValue();
+                Bundle bundle = new Bundle();
+                bundle.putString("username", currentUser);
+                Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
             }
         });
 

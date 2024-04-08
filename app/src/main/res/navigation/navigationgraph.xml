@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_fragmentMyList_to_fragmentLogin3"
             app:destination="@id/fragmentLogin3" />
+        <action
+            android:id="@+id/action_fragmentMyList_to_fragmentGamelist2"
+            app:destination="@id/fragmentGamelist2" />
     </fragment>
     <fragment
         android:id="@+id/fragmentFilter"
