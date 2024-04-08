@@ -29,17 +29,14 @@ public class FragmentGamelist extends Fragment {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    static ArrayList<DataModel> localDataSet;
-    CustomeAdapter adapter;
-    EditText input;
-    Button btn_logout;
-    Button btn_addItem;
-    Button btn_myList;
-    TextView userName;
-    String currentUser;
-    DatabaseReference reference;
-    Query checkUserDatabase;
-
+    private static ArrayList<DataModel> localDataSet;
+    private CustomeAdapter adapter;
+    private EditText input;
+    private Button btn_logout;
+    private Button btn_addItem;
+    private Button btn_myList;
+    private TextView userName;
+    private String currentUser;
 
 
     @Override
@@ -58,9 +55,6 @@ public class FragmentGamelist extends Fragment {
         currentUser = getArguments().getString("username");
         adapter = new CustomeAdapter(localDataSet, requireContext(), currentUser, "no");
 
-//        reference = FirebaseDatabase.getInstance().getReference("users");
-//        checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-
         btn_logout = view.findViewById(R.id.btn_logout);
         btn_myList = view.findViewById(R.id.btn_mylist);
         userName = view.findViewById(R.id.textView_user);
@@ -74,7 +68,6 @@ public class FragmentGamelist extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
 
 
         btn_logout.setOnClickListener(new View.OnClickListener() {

@@ -29,11 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 public class FragmentLogin extends Fragment {
 
 
-    TextInputEditText editTextUserName;
-    TextInputEditText editTextPassword;
-    Button buttonLogin;
-    ProgressBar progressBar;
-    TextView textView;
+    private TextInputEditText editTextUserName;
+    private TextInputEditText editTextPassword;
+    private Button buttonLogin;
+    private ProgressBar progressBar;
+    private TextView textView;
 
 
     @Override

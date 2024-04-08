@@ -3,6 +3,7 @@ package com.example.gameslist.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,10 +86,8 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView textViewTitle, textViewGenre, textViewPlatform, textViewMore;
         ImageView imageGame;
-
         Button btn_like;
         CheckBox cb_heart;
 
@@ -123,15 +122,28 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                 }
             });
 
-
             cb_heart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    reference = FirebaseDatabase.getInstance().getReference("users");
                     if (cb_heart.isChecked()) {
-                        reference = FirebaseDatabase.getInstance().getReference("users");
                         if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
                             reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
-                            localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
+                        }
+                    }
+                    else {
+                        removeItem(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle());
+                        reference.child(currentUser).child("dataSet").removeValue();
+                        reference.child(currentUser).child("dataSet").setValue(localLikedGamesDataSet);
+
+                        try{
+                            Toast.makeText(v.getContext(), "Go to your list to see the changes",
+                                    Toast.LENGTH_LONG).show();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("username", currentUser);
+                            Navigation.findNavController(v).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
+                        }catch(Exception e) {
+                            Log.d("checkError", "oops");
                         }
                     }
 
@@ -145,11 +157,19 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                     return false;
                 }
+
+                public void removeItem(ArrayList<DataModel> dataSet, String nameCheck) {
+                    for (DataModel i : dataSet) {
+                        if (i.getTitle().compareTo(nameCheck) == 0){
+                            dataSet.remove(i);
+                            break;
+                        }
+
+                    }
+
+                }
             });
-
-
         }
-
     }
 
 
@@ -181,11 +201,9 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         else
             cb_heart.setChecked(false);
 
-
         textViewTitle.setText(dataSet.get(position).getTitle());
         textViewGenre.setText(dataSet.get(position).getGenre());
         textViewPlatform.setText(dataSet.get(position).getPlatform());
-
         String imageUrl = dataSet.get(position).getImageGame();
         Glide.with(context).load(imageUrl).into(imageGame);
 
@@ -196,7 +214,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
             if (i.getTitle().compareTo(nameCheck) == 0)
                 return true;
         }
-
         return false;
     }
 

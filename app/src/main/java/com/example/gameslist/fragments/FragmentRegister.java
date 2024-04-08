@@ -31,12 +31,12 @@ import java.util.ArrayList;
 
 public class FragmentRegister extends Fragment {
 
-    TextInputEditText editTextUserName, editTextPassword;
-    Button buttonRegister;
-    FirebaseDatabase database;
-    DatabaseReference reference;
-    ProgressBar progressBar;
-    TextView textView;
+    private TextInputEditText editTextUserName, editTextPassword;
+    private Button buttonRegister;
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+    private ProgressBar progressBar;
+    private TextView textView;
 
 
 

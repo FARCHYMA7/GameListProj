@@ -38,13 +38,8 @@ import java.util.ArrayList;
 
 public class FragmentOnClickedGame extends Fragment {
 
-    TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
-    VideoView trailer;
-
-    WebView webView;
-
-    private static ArrayList<String> arrvideos = new ArrayList<>();
-
+    private TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
+    private WebView webView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,37 +94,24 @@ public class FragmentOnClickedGame extends Fragment {
 
         try {
             URL url = new URL(sURL);
-
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             request.connect();
 
             JsonParser jp = new JsonParser();
-
             JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
 
-
             JsonObject rootobj = root.getAsJsonObject();
-
             JsonArray jsonArr = rootobj.get("items").getAsJsonArray();
-
             JsonObject id = jsonArr.get(0).getAsJsonObject();
-
             JsonObject idObj = id.get("id").getAsJsonObject();
 
-
-
             String videoId = String.valueOf(idObj.get("videoId"));
-
-            // String videoUrl = String.format("https://www.youtube.com/watch?v=%s", videoId).replace("\"", "");
-
 
             WebSettings webSettings = webView.getSettings();
             webSettings.setJavaScriptEnabled(true); // Enable JavaScript
 
             String embedURL = String.format("https://www.youtube.com/embed/%s", videoId).replace("\"", "");
-
             String frameVideo = String.format("<html><body><iframe width=\"100%%\" height=\"100%%\" src=\"%s\" frameborder=\"0\" allowfullscreen></iframe></body></html>", embedURL);
-
             webView.loadData(frameVideo, "text/html", "utf-8");
 
             return view;
@@ -139,12 +121,5 @@ public class FragmentOnClickedGame extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
-//        String imageUrl = specificGame.getImageGame();
-//        Glide.with(requireContext()).load(imageUrl).into(imageView);
-
-
-
     }
 }
