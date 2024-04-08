@@ -29,8 +29,7 @@ import java.util.ArrayList;
 
 public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHolder> {
     static ArrayList<DataModel> dataSet;
-    static ArrayList<DataModel> localDataSet;
-    static ArrayList<DataModel> bizo;
+    static ArrayList<DataModel> localLikedGamesDataSet;
     Context context;
     static String currentUser;
     static DatabaseReference reference;
@@ -42,7 +41,44 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         this.dataSet = dataSet;
         this.context = context;
         this.currentUser = currentUser;
-        localDataSet = new ArrayList<>();
+        //localLikedGamesDataSet = new ArrayList<>();
+
+        reference = FirebaseDatabase.getInstance().getReference("users");
+        checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
+
+        checkUserDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                int i = 0;
+
+                localLikedGamesDataSet = new ArrayList<>();
+
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    while (item.child("dataSet").child(String.valueOf(i)).exists()) {
+                        String title = item.child("dataSet").child(String.valueOf(i)).child("title").getValue(String.class);
+                        String image = item.child("dataSet").child(String.valueOf(i)).child("imageGame").getValue(String.class);
+                        String description = item.child("dataSet").child(String.valueOf(i)).child("shortDescription").getValue(String.class);
+                        String gameUrl = item.child("dataSet").child(String.valueOf(i)).child("gameUrl").getValue(String.class);
+                        String genre = item.child("dataSet").child(String.valueOf(i)).child("genre").getValue(String.class);
+                        String platform = item.child("dataSet").child(String.valueOf(i)).child("platform").getValue(String.class);
+                        String publisher = item.child("dataSet").child(String.valueOf(i)).child("publisher").getValue(String.class);
+                        String developer = item.child("dataSet").child(String.valueOf(i)).child("developer").getValue(String.class);
+                        String releaseDate = item.child("dataSet").child(String.valueOf(i)).child("releaseDate").getValue(String.class);
+                        localLikedGamesDataSet.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate));
+                        //adapter.notifyItemInserted(localLikedGames.size() - 1);
+                        i++;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 
@@ -88,13 +124,21 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                 @Override
                 public void onClick(View v) {
 
+                    int i = 0;
+
                     reference = FirebaseDatabase.getInstance().getReference("users");
                     checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-                    if (!isItemExist(localDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
-                        localDataSet.add(dataSet.get(getAdapterPosition()));
-                        reference.child(currentUser).child("dataSet").removeValue();
-                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
+
+
+                    if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
+//                        reference.child(currentUser).child("dataSet").removeValue();
+//                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
+                        reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
+                        localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
                     }
+
+
+                    //reference.child(userName).setValue(newUser); // there is no userName like this thats why its doesnt override it
 
 
 

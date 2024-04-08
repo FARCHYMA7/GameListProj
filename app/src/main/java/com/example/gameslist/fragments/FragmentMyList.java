@@ -105,7 +105,7 @@ public class FragmentMyList extends Fragment {
         userName = view.findViewById(R.id.textView_user);
 
 
-        String textToWrite = "Hello " + currentUser;
+        String textToWrite = currentUser + "'s List";
         userName.setText(textToWrite);
 
         recyclerView = view.findViewById(R.id.res);
