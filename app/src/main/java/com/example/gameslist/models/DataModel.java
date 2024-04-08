@@ -55,8 +55,8 @@ public class DataModel {
         return developer;
     }
 
-
     public String getReleaseDate() {
         return releaseDate;
     }
+
 }

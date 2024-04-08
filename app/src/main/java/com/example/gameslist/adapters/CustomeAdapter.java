@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +36,15 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
     static DatabaseReference reference;
     static Query checkUserDatabase;
 
+    String liked;
 
-    public CustomeAdapter(ArrayList<DataModel> dataSet, Context context, String currentUser) {
+
+    public CustomeAdapter(ArrayList<DataModel> dataSet, Context context, String currentUser, String liked) {
 
         this.dataSet = dataSet;
         this.context = context;
         this.currentUser = currentUser;
+        this.liked = liked;
         //localLikedGamesDataSet = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("users");
@@ -88,6 +92,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         ImageView imageGame;
 
         Button btn_like;
+        CheckBox cb_heart;
 
         CustomeAdapter adapter;
 
@@ -100,6 +105,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
             textViewPlatform = itemView.findViewById(R.id.tv_Platform);
             imageGame = itemView.findViewById(R.id.image_game);
             btn_like = itemView.findViewById(R.id.btn_like);
+            cb_heart = itemView.findViewById(R.id.cb_heart);
             textViewMore = itemView.findViewById(R.id.more_info);
 
             textViewMore.setOnClickListener(new View.OnClickListener() {
@@ -120,27 +126,49 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                 }
             });
 
-            btn_like.setOnClickListener(new View.OnClickListener() { //maybe another adapter?
+//            btn_like.setOnClickListener(new View.OnClickListener() { //maybe another adapter?
+//                @Override
+//                public void onClick(View v) {
+//
+//                    reference = FirebaseDatabase.getInstance().getReference("users");
+//                    //checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
+//
+//
+//                    if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
+////                        reference.child(currentUser).child("dataSet").removeValue();
+////                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
+//                        reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
+//                        localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
+//                    }
+//
+//
+//                    //reference.child(userName).setValue(newUser); // there is no userName like this thats why its doesnt override it
+//
+//
+//
+//                }
+//
+//                public boolean isItemExist(ArrayList<DataModel> dataSet, String nameCheck) {
+//                    for (DataModel i : dataSet) {
+//                        if (i.getTitle().compareTo(nameCheck) == 0)
+//                            return true;
+//                    }
+//
+//                    return false;
+//                }
+//            });
+
+
+            cb_heart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    int i = 0;
-
-                    reference = FirebaseDatabase.getInstance().getReference("users");
-                    //checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-
-
-                    if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
-//                        reference.child(currentUser).child("dataSet").removeValue();
-//                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
-                        reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
-                        localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
+                    if (cb_heart.isChecked()) {
+                        reference = FirebaseDatabase.getInstance().getReference("users");
+                        if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
+                            reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
+                            localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
+                        }
                     }
-
-
-                    //reference.child(userName).setValue(newUser); // there is no userName like this thats why its doesnt override it
-
-
 
                 }
 
@@ -177,6 +205,17 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         TextView textViewGenre = holder.textViewGenre;
         TextView textViewPlatform = holder.textViewPlatform;
         ImageView imageGame = holder.imageGame;
+        CheckBox cb_heart = holder.cb_heart;
+
+        if (liked.compareTo("yes") == 0)
+            cb_heart.setChecked(true);
+        else if (localLikedGamesDataSet == null)
+            cb_heart.setChecked(false);
+        else if (isItemExist(localLikedGamesDataSet, dataSet.get(position).getTitle()))
+            cb_heart.setChecked(true);
+        else
+            cb_heart.setChecked(false);
+
 
         textViewTitle.setText(dataSet.get(position).getTitle());
         textViewGenre.setText(dataSet.get(position).getGenre());
@@ -185,6 +224,15 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         String imageUrl = dataSet.get(position).getImageGame();
         Glide.with(context).load(imageUrl).into(imageGame);
 
+    }
+
+    public boolean isItemExist(ArrayList<DataModel> dataSet, String nameCheck) {
+        for (DataModel i : dataSet) {
+            if (i.getTitle().compareTo(nameCheck) == 0)
+                return true;
+        }
+
+        return false;
     }
 
     @Override

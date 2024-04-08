@@ -79,6 +79,12 @@
         android:layout_height="wrap_content"
         android:text="Like" />
 
+    <CheckBox
+        android:id="@+id/cb_heart"
+        android:button="@drawable/selector_my_items"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
 
 

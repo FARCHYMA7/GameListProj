@@ -61,7 +61,7 @@ public class FragmentMyList extends Fragment {
 
         localLikedGames = new ArrayList<>();
         currentUser = getArguments().getString("username");
-        adapter = new CustomeAdapter(localLikedGames, requireContext(), currentUser);
+        adapter = new CustomeAdapter(localLikedGames, requireContext(), currentUser, "yes");
 
 
         reference = FirebaseDatabase.getInstance().getReference("users");

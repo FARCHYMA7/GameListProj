@@ -56,7 +56,7 @@ public class FragmentGamelist extends Fragment {
 
         localDataSet = DataService.getArrGames();
         currentUser = getArguments().getString("username");
-        adapter = new CustomeAdapter(localDataSet, requireContext(), currentUser);
+        adapter = new CustomeAdapter(localDataSet, requireContext(), currentUser, "no");
 
 //        reference = FirebaseDatabase.getInstance().getReference("users");
 //        checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
