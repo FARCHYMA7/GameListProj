@@ -45,7 +45,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         this.context = context;
         this.currentUser = currentUser;
         this.liked = liked;
-        //localLikedGamesDataSet = new ArrayList<>();
 
         reference = FirebaseDatabase.getInstance().getReference("users");
         checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
@@ -70,7 +69,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                         String developer = item.child("dataSet").child(String.valueOf(i)).child("developer").getValue(String.class);
                         String releaseDate = item.child("dataSet").child(String.valueOf(i)).child("releaseDate").getValue(String.class);
                         localLikedGamesDataSet.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate));
-                        //adapter.notifyItemInserted(localLikedGames.size() - 1);
                         i++;
                     }
                 }
@@ -104,7 +102,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
             textViewGenre = itemView.findViewById(R.id.tv_Genre);
             textViewPlatform = itemView.findViewById(R.id.tv_Platform);
             imageGame = itemView.findViewById(R.id.image_game);
-            btn_like = itemView.findViewById(R.id.btn_like);
             cb_heart = itemView.findViewById(R.id.cb_heart);
             textViewMore = itemView.findViewById(R.id.more_info);
 
@@ -125,38 +122,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                 }
             });
-
-//            btn_like.setOnClickListener(new View.OnClickListener() { //maybe another adapter?
-//                @Override
-//                public void onClick(View v) {
-//
-//                    reference = FirebaseDatabase.getInstance().getReference("users");
-//                    //checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-//
-//
-//                    if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
-////                        reference.child(currentUser).child("dataSet").removeValue();
-////                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
-//                        reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
-//                        localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
-//                    }
-//
-//
-//                    //reference.child(userName).setValue(newUser); // there is no userName like this thats why its doesnt override it
-//
-//
-//
-//                }
-//
-//                public boolean isItemExist(ArrayList<DataModel> dataSet, String nameCheck) {
-//                    for (DataModel i : dataSet) {
-//                        if (i.getTitle().compareTo(nameCheck) == 0)
-//                            return true;
-//                    }
-//
-//                    return false;
-//                }
-//            });
 
 
             cb_heart.setOnClickListener(new View.OnClickListener() {
