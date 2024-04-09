@@ -3,10 +3,12 @@ package com.example.gameslist.adapters;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,13 +37,15 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
     static DatabaseReference reference;
     static Query checkUserDatabase;
 
+    String liked;
 
-    public CustomeAdapter(ArrayList<DataModel> dataSet, Context context, String currentUser) {
+
+    public CustomeAdapter(ArrayList<DataModel> dataSet, Context context, String currentUser, String liked) {
 
         this.dataSet = dataSet;
         this.context = context;
         this.currentUser = currentUser;
-        //localLikedGamesDataSet = new ArrayList<>();
+        this.liked = liked;
 
         reference = FirebaseDatabase.getInstance().getReference("users");
         checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
@@ -66,7 +70,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                         String developer = item.child("dataSet").child(String.valueOf(i)).child("developer").getValue(String.class);
                         String releaseDate = item.child("dataSet").child(String.valueOf(i)).child("releaseDate").getValue(String.class);
                         localLikedGamesDataSet.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate));
-                        //adapter.notifyItemInserted(localLikedGames.size() - 1);
                         i++;
                     }
                 }
@@ -83,11 +86,10 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView textViewTitle, textViewGenre, textViewPlatform, textViewMore;
         ImageView imageGame;
-
         Button btn_like;
+        CheckBox cb_heart;
 
         CustomeAdapter adapter;
 
@@ -99,7 +101,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
             textViewGenre = itemView.findViewById(R.id.tv_Genre);
             textViewPlatform = itemView.findViewById(R.id.tv_Platform);
             imageGame = itemView.findViewById(R.id.image_game);
-            btn_like = itemView.findViewById(R.id.btn_like);
+            cb_heart = itemView.findViewById(R.id.cb_heart);
             textViewMore = itemView.findViewById(R.id.more_info);
 
             textViewMore.setOnClickListener(new View.OnClickListener() {
@@ -120,27 +122,30 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                 }
             });
 
-            btn_like.setOnClickListener(new View.OnClickListener() { //maybe another adapter?
+            cb_heart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    int i = 0;
-
                     reference = FirebaseDatabase.getInstance().getReference("users");
-                    //checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-
-
-                    if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
-//                        reference.child(currentUser).child("dataSet").removeValue();
-//                        reference.child(currentUser).child("dataSet").setValue(localDataSet);
-                        reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
-                        localLikedGamesDataSet.add(dataSet.get(getAdapterPosition()));
+                    if (cb_heart.isChecked()) {
+                        if (!isItemExist(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle())) {
+                            reference.child(currentUser).child("dataSet").child(String.valueOf(localLikedGamesDataSet.size())).setValue(dataSet.get(getAdapterPosition()));
+                        }
                     }
+                    else {
+                        removeItem(localLikedGamesDataSet, dataSet.get(getAdapterPosition()).getTitle());
+                        reference.child(currentUser).child("dataSet").removeValue();
+                        reference.child(currentUser).child("dataSet").setValue(localLikedGamesDataSet);
 
-
-                    //reference.child(userName).setValue(newUser); // there is no userName like this thats why its doesnt override it
-
-
+                        try{
+                            Toast.makeText(v.getContext(), "Go to your list to see the changes",
+                                    Toast.LENGTH_LONG).show();
+                            Bundle bundle = new Bundle();
+                            bundle.putString("username", currentUser);
+                            Navigation.findNavController(v).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
+                        }catch(Exception e) {
+                            Log.d("checkError", "oops");
+                        }
+                    }
 
                 }
 
@@ -152,11 +157,19 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                     return false;
                 }
+
+                public void removeItem(ArrayList<DataModel> dataSet, String nameCheck) {
+                    for (DataModel i : dataSet) {
+                        if (i.getTitle().compareTo(nameCheck) == 0){
+                            dataSet.remove(i);
+                            break;
+                        }
+
+                    }
+
+                }
             });
-
-
         }
-
     }
 
 
@@ -177,14 +190,31 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         TextView textViewGenre = holder.textViewGenre;
         TextView textViewPlatform = holder.textViewPlatform;
         ImageView imageGame = holder.imageGame;
+        CheckBox cb_heart = holder.cb_heart;
+
+        if (liked.compareTo("yes") == 0)
+            cb_heart.setChecked(true);
+        else if (localLikedGamesDataSet == null)
+            cb_heart.setChecked(false);
+        else if (isItemExist(localLikedGamesDataSet, dataSet.get(position).getTitle()))
+            cb_heart.setChecked(true);
+        else
+            cb_heart.setChecked(false);
 
         textViewTitle.setText(dataSet.get(position).getTitle());
         textViewGenre.setText(dataSet.get(position).getGenre());
         textViewPlatform.setText(dataSet.get(position).getPlatform());
-
         String imageUrl = dataSet.get(position).getImageGame();
         Glide.with(context).load(imageUrl).into(imageGame);
 
+    }
+
+    public boolean isItemExist(ArrayList<DataModel> dataSet, String nameCheck) {
+        for (DataModel i : dataSet) {
+            if (i.getTitle().compareTo(nameCheck) == 0)
+                return true;
+        }
+        return false;
     }
 
     @Override

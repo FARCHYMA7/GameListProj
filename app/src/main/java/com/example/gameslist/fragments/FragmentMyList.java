@@ -34,15 +34,14 @@ public class FragmentMyList extends Fragment {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    static ArrayList<DataModel> localLikedGames;
-    static ArrayList<DataModel> localDataSet;
-    CustomeAdapter adapter;
-    Button btn_logout;
-    Button btn_reset;
-    TextView userName;
-    String currentUser;
-    DatabaseReference reference;
-    Query checkUserDatabase;
+    private static ArrayList<DataModel> localLikedGames;
+    private CustomeAdapter adapter;
+    private Button btn_logout;
+    private Button btn_reset;
+    private TextView userName;
+    private String currentUser;
+    private DatabaseReference reference;
+    private Query checkUserDatabase;
 
 
 
@@ -61,7 +60,7 @@ public class FragmentMyList extends Fragment {
 
         localLikedGames = new ArrayList<>();
         currentUser = getArguments().getString("username");
-        adapter = new CustomeAdapter(localLikedGames, requireContext(), currentUser);
+        adapter = new CustomeAdapter(localLikedGames, requireContext(), currentUser, "yes");
 
 
         reference = FirebaseDatabase.getInstance().getReference("users");
@@ -128,6 +127,8 @@ public class FragmentMyList extends Fragment {
             public void onClick(View v) {
                 reference = FirebaseDatabase.getInstance().getReference("users");
                 reference.child(currentUser).child("dataSet").removeValue();
+                Toast.makeText(v.getContext(), "Go to your list to see the changes",
+                        Toast.LENGTH_LONG).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("username", currentUser);
                 Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);

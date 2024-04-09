@@ -62,7 +62,7 @@ public class DataService {
                 String developer = elementDeveloper.toString().replace("\"", "");
                 String releaseDate = elementReleaseDate.toString().replace("\"", "");
 
-                arrGames.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate ));
+                arrGames.add(new DataModel(title, image, description, gameUrl, genre, platform, publisher, developer, releaseDate));
 
             }
 
