@@ -109,6 +109,8 @@ public class FragmentLogin extends Fragment {
                         editTextUserName.setError(null);
                         Bundle bundle = new Bundle();
                         bundle.putString("username", userName);
+                        bundle.putString("search", "no");
+                        bundle.putString("choice", "no");
                         Navigation.findNavController(view).navigate(R.id.action_fragmentLogin3_to_fragmentGamelist2, bundle);
 
 

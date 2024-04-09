@@ -66,9 +66,6 @@ public class DataService {
 
             }
 
-
-
-
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

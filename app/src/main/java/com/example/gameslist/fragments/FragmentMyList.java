@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +22,8 @@ import com.example.gameslist.adapters.CustomeAdapter;
 import com.example.gameslist.models.DataModel;
 import com.example.gameslist.R;
 import com.example.gameslist.services.DataService;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,12 +39,11 @@ public class FragmentMyList extends Fragment {
     private LinearLayoutManager layoutManager;
     private static ArrayList<DataModel> localLikedGames;
     private CustomeAdapter adapter;
-    private Button btn_logout;
-    private Button btn_reset;
     private TextView userName;
     private String currentUser;
     private DatabaseReference reference;
     private Query checkUserDatabase;
+    private BottomNavigationView bottomNavigationView;
 
 
 
@@ -97,13 +99,7 @@ public class FragmentMyList extends Fragment {
             }
         });
 
-
-
-        btn_logout = view.findViewById(R.id.btn_logout);
-        btn_reset = view.findViewById(R.id.btn_reset);
         userName = view.findViewById(R.id.textView_user);
-
-
         String textToWrite = currentUser + "'s List";
         userName.setText(textToWrite);
 
@@ -113,28 +109,34 @@ public class FragmentMyList extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
+        bottomNavigationView = view.findViewById(R.id.bottomNavigationView2);
 
-
-        btn_logout.setOnClickListener(new View.OnClickListener() {
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentLogin3);
-            }
-        });
-
-        btn_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reference = FirebaseDatabase.getInstance().getReference("users");
-                reference.child(currentUser).child("dataSet").removeValue();
-                Toast.makeText(v.getContext(), "Go to your list to see the changes",
-                        Toast.LENGTH_LONG).show();
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Bundle bundle = new Bundle();
                 bundle.putString("username", currentUser);
-                Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
+                bundle.putString("search", "no");
+                bundle.putString("choice", "no");
+                int id = item.getItemId();
+                if (id == R.id.logout2) {
+                    Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentLogin3);
+                }
+                else if (id == R.id.clear) {
+                    reference = FirebaseDatabase.getInstance().getReference("users");
+                    reference.child(currentUser).child("dataSet").removeValue();
+                    Toast.makeText(view.getContext(), "Go to your list to see the changes",
+                            Toast.LENGTH_LONG).show();
+                    Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
+                }
+                else if (id == R.id.logout) {
+                    Navigation.findNavController(view).navigate(R.id.action_fragmentGamelist2_to_fragmentLogin3);
+                }
+
+                return true;
+
             }
         });
-
 
         return view;
 

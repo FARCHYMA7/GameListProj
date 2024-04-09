@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/list"
+        android:title="My List"
+        android:icon="@drawable/baseline_format_list_bulleted_24"/>
+    <item
+        android:id="@+id/filter"
+        android:title="Filter"
+        android:icon="@drawable/baseline_filter_alt_24"/>
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        android:icon="@drawable/baseline_exit_to_app_24"/>
+
+</menu>

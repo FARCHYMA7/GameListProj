@@ -65,7 +65,11 @@
         android:id="@+id/fragmentFilter"
         android:name="com.example.gameslist.fragments.FragmentFilter"
         android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" />
+        tools:layout="@layout/fragment_filter" >
+        <action
+            android:id="@+id/action_fragmentFilter_to_fragmentGamelist2"
+            app:destination="@id/fragmentGamelist2" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentOnClickedGame"
         android:name="com.example.gameslist.fragments.FragmentOnClickedGame"

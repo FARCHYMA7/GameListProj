@@ -30,7 +30,7 @@
                 android:id="@+id/textView_user"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="left|center"
+                android:gravity="center"
                 android:background="@color/white"
                 android:text="User"
                 android:textColor="@color/black"
@@ -39,14 +39,6 @@
 
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_logout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Logout"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"/>
 
 
     </LinearLayout>
@@ -67,11 +59,12 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_reset"
-        android:layout_width="wrap_content"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reset"
-        android:layout_gravity="center_horizontal" />
+        app:menu="@menu/buttom_nav_menu_mylist"/>
+
+
 
 </LinearLayout>

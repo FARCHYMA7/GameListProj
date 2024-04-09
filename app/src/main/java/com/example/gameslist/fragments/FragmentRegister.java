@@ -123,6 +123,8 @@ public class FragmentRegister extends Fragment {
                     progressBar.setVisibility(View.GONE);
                     Bundle bundle = new Bundle();
                     bundle.putString("username", userName);
+                    bundle.putString("search", "no");
+                    bundle.putString("choice", "no");
                     Navigation.findNavController(view).navigate(R.id.action_fragmentRegister3_to_fragmentGamelist2, bundle);
 
 
