@@ -38,9 +38,6 @@ public class FragmentRegister extends Fragment {
     private ProgressBar progressBar;
     private TextView textView;
 
-
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,11 +86,65 @@ public class FragmentRegister extends Fragment {
                     return;
                 }
 
-                checkIfUserExist(userName, password, view);
+                if(userName.length()< 5)
+                {
+                    editTextUserName.setError("User name must be at least 5");
+                    editTextUserName.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
 
+                if(!(userName.matches("(.*[a-z].*)")))
+                {
+                    editTextUserName.setError("There must be at least one english letter");
+                    editTextUserName.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+                if (!((userName.matches("(.*[0-9].*)"))))
+                {
+                    editTextUserName.setError("There must be at least one digit");
+                    editTextUserName.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                if(password.length()< 8)
+                {
+                    editTextPassword.setError("Password size must be at least 8");
+                    editTextPassword.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                if (!((password.matches("(.*[0-9].*)"))))
+                {
+                    editTextPassword.setError("There must be at least one digit");
+                    editTextPassword.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                if(!(password.matches("^(?=.*[!@#$%^&*)(_+=-]).*$")))
+                {
+                    editTextPassword.setError("There must be at least one special symbol");
+                    editTextPassword.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+
+                if(!(password.matches("(.*[A-Z].*)")))
+                {
+                    editTextPassword.setError("There must be at least one Capital letter");
+                    editTextPassword.requestFocus();
+                    progressBar.setVisibility(View.GONE);
+                    return;
+                }
+
+                checkIfUserExist(userName, password, view);
             }
         });
-
 
         return view;
     }
@@ -102,7 +153,6 @@ public class FragmentRegister extends Fragment {
 
         DatabaseReference checkReference = FirebaseDatabase.getInstance().getReference("users");
         Query checkUserDatabase = checkReference.orderByChild("userName").equalTo(userName);
-
 
         checkUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -115,7 +165,7 @@ public class FragmentRegister extends Fragment {
                     progressBar.setVisibility(View.GONE);
                 }
                 else {
-                    ArrayList<DataModel> userLikedGames = new ArrayList<>(); // not sure about that if to put in the project
+                    ArrayList<DataModel> userLikedGames = new ArrayList<>();
                     User newUser = new User(userName, password, userLikedGames);
                     reference.child(userName).setValue(newUser);
                     Toast.makeText(getActivity(), "Account created",
@@ -126,7 +176,6 @@ public class FragmentRegister extends Fragment {
                     bundle.putString("search", "no");
                     bundle.putString("choice", "no");
                     Navigation.findNavController(view).navigate(R.id.action_fragmentRegister3_to_fragmentGamelist2, bundle);
-
 
                 }
             }

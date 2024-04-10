@@ -45,8 +45,6 @@ public class FragmentMyList extends Fragment {
     private Query checkUserDatabase;
     private BottomNavigationView bottomNavigationView;
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,21 +57,16 @@ public class FragmentMyList extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_my_list, container, false);
 
-
         localLikedGames = new ArrayList<>();
         currentUser = getArguments().getString("username");
+
         adapter = new CustomeAdapter(localLikedGames, requireContext(), currentUser, "yes");
-
-
         reference = FirebaseDatabase.getInstance().getReference("users");
         checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-
         checkUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 int i = 0;
-
                 for (DataSnapshot item : snapshot.getChildren()) {
                     while (item.child("dataSet").child(String.valueOf(i)).exists()) {
                         String title = item.child("dataSet").child(String.valueOf(i)).child("title").getValue(String.class);
@@ -90,7 +83,6 @@ public class FragmentMyList extends Fragment {
                         i++;
                     }
                 }
-
             }
 
             @Override
@@ -110,7 +102,6 @@ public class FragmentMyList extends Fragment {
         recyclerView.setAdapter(adapter);
 
         bottomNavigationView = view.findViewById(R.id.bottomNavigationView2);
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -132,14 +123,9 @@ public class FragmentMyList extends Fragment {
                 else if (id == R.id.logout) {
                     Navigation.findNavController(view).navigate(R.id.action_fragmentGamelist2_to_fragmentLogin3);
                 }
-
                 return true;
-
             }
         });
-
         return view;
-
     }
-
 }

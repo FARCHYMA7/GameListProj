@@ -32,13 +32,11 @@ import java.util.ArrayList;
 public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHolder> {
     static ArrayList<DataModel> dataSet;
     static ArrayList<DataModel> localLikedGamesDataSet;
-    Context context;
+    private Context context;
     static String currentUser;
     static DatabaseReference reference;
     static Query checkUserDatabase;
-
     String liked;
-
 
     public CustomeAdapter(ArrayList<DataModel> dataSet, Context context, String currentUser, String liked) {
 
@@ -49,16 +47,12 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
         reference = FirebaseDatabase.getInstance().getReference("users");
         checkUserDatabase = reference.orderByChild("userName").equalTo(currentUser);
-
         checkUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 int i = 0;
-
                 localLikedGamesDataSet = new ArrayList<>();
-
-                for (DataSnapshot item : snapshot.getChildren()) {
+                for (DataSnapshot item : snapshot.getChildren()) { // retrive the liked games from the firebase for each user to put it in local dataSet
                     while (item.child("dataSet").child(String.valueOf(i)).exists()) {
                         String title = item.child("dataSet").child(String.valueOf(i)).child("title").getValue(String.class);
                         String image = item.child("dataSet").child(String.valueOf(i)).child("imageGame").getValue(String.class);
@@ -73,7 +67,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                         i++;
                     }
                 }
-
             }
 
             @Override
@@ -81,29 +74,21 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
             }
         });
-
-
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView textViewTitle, textViewGenre, textViewPlatform, textViewMore;
         ImageView imageGame;
-        Button btn_like;
         CheckBox cb_heart;
-
-        CustomeAdapter adapter;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-
             textViewTitle = itemView.findViewById(R.id.tv_Title);
             textViewGenre = itemView.findViewById(R.id.tv_Genre);
             textViewPlatform = itemView.findViewById(R.id.tv_Platform);
             imageGame = itemView.findViewById(R.id.image_game);
             cb_heart = itemView.findViewById(R.id.cb_heart);
             textViewMore = itemView.findViewById(R.id.more_info);
-
             textViewMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,18 +96,16 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                     Bundle bundle = new Bundle();
                     bundle.putString("gameName", dataSet.get(getAdapterPosition()).getTitle());
 
-                    try{
+                    try{ // i have 2 fragments that has this button
 
                         Navigation.findNavController(itemView).navigate(R.id.action_fragmentGamelist2_to_fragmentOnClickedGame,bundle);
                     }catch (Exception e) {
                         Navigation.findNavController(itemView).navigate(R.id.action_fragmentMyList_to_fragmentOnClickedGame,bundle);
                     }
-
-
                 }
             });
 
-            cb_heart.setOnClickListener(new View.OnClickListener() {
+            cb_heart.setOnClickListener(new View.OnClickListener() { // handling the like and unlike - local and in firebase
                 @Override
                 public void onClick(View v) {
                     reference = FirebaseDatabase.getInstance().getReference("users");
@@ -146,7 +129,6 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                             Log.d("checkError", "oops");
                         }
                     }
-
                 }
 
                 public boolean isItemExist(ArrayList<DataModel> dataSet, String nameCheck) {
@@ -154,19 +136,16 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
                         if (i.getTitle().compareTo(nameCheck) == 0)
                             return true;
                     }
-
                     return false;
                 }
 
-                public void removeItem(ArrayList<DataModel> dataSet, String nameCheck) {
+                public void removeItem(ArrayList<DataModel> dataSet, String nameCheck) { // the regular dataSet.remove didnt work
                     for (DataModel i : dataSet) {
                         if (i.getTitle().compareTo(nameCheck) == 0){
                             dataSet.remove(i);
                             break;
                         }
-
                     }
-
                 }
             });
         }
@@ -178,9 +157,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
     public CustomeAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.listgame_item, parent, false);
-
         MyViewHolder myViewHolder = new MyViewHolder(view);
-
         return myViewHolder;
     }
 
@@ -192,11 +169,11 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
         ImageView imageGame = holder.imageGame;
         CheckBox cb_heart = holder.cb_heart;
 
-        if (liked.compareTo("yes") == 0)
+        if (liked.compareTo("yes") == 0) // when the user comeback from the his list i need to put his liked , another check to be sure
             cb_heart.setChecked(true);
         else if (localLikedGamesDataSet == null)
             cb_heart.setChecked(false);
-        else if (isItemExist(localLikedGamesDataSet, dataSet.get(position).getTitle()))
+        else if (isItemExist(localLikedGamesDataSet, dataSet.get(position).getTitle())) //check if this item is in the localLiked to know if i need to put the liked button on
             cb_heart.setChecked(true);
         else
             cb_heart.setChecked(false);

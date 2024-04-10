@@ -40,7 +40,6 @@ public class FragmentOnClickedGame extends Fragment {
 
     private TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
     private WebView webView;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +71,7 @@ public class FragmentOnClickedGame extends Fragment {
         DataModel specificGame = localDataSet.get(0);
 
         for (DataModel dm : localDataSet) {
-            if (dm.getTitle().compareTo(game) == 0) {
+            if (dm.getTitle().compareTo(game) == 0) { //searching the chosen game in the api dataSet
                 specificGame = dm;
                 break;
             }
@@ -92,7 +91,7 @@ public class FragmentOnClickedGame extends Fragment {
 
         String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", game);
 
-        try {
+        try { //handling the youtube api to get the trailer of the specific game
             URL url = new URL(sURL);
             HttpURLConnection request = (HttpURLConnection) url.openConnection();
             request.connect();

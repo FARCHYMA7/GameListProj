@@ -36,16 +36,11 @@ public class FragmentGamelist extends Fragment {
     private LinearLayoutManager layoutManager;
     private static ArrayList<DataModel> localDataSet;
     private CustomeAdapter adapter;
-    private Button btn_logout;
-    private Button btn_filter;
-    private Button btn_myList;
     private TextView userName;
     private String currentUser;
     private String search;
     private String choice;
     private BottomNavigationView bottomNavigationView;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -89,6 +84,7 @@ public class FragmentGamelist extends Fragment {
 
         recyclerView = view.findViewById(R.id.res);
         layoutManager = new LinearLayoutManager(getContext());
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

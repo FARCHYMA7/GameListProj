@@ -32,7 +32,6 @@ public class FragmentFilter extends Fragment {
     private Button search_btn;
     private BottomNavigationView bottomNavigationView;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,16 +47,11 @@ public class FragmentFilter extends Fragment {
         spinnerGenre = view.findViewById(R.id.spinnerGenre);
         search_et = view.findViewById(R.id.search_et);
         search_btn = view.findViewById(R.id.search_btn);
-
         currentUser = getArguments().getString("username");
-
-
         String[] items = new String[]{"Genre", "Developer", "Name"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinnerGenre.setAdapter(adapter);
-
         bottomNavigationView = view.findViewById(R.id.bottomNavigationView3);
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -67,9 +61,7 @@ public class FragmentFilter extends Fragment {
                 if (id == R.id.clear3) {
                     Navigation.findNavController(view).navigate(R.id.action_fragmentFilter_to_fragmentGamelist2, bundle);
                 }
-
                 return true;
-
             }
         });
 
@@ -92,7 +84,6 @@ public class FragmentFilter extends Fragment {
 
             }
         });
-
 
         return view;
     }

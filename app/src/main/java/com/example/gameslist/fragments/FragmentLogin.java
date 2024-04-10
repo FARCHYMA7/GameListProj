@@ -28,13 +28,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FragmentLogin extends Fragment {
 
-
     private TextInputEditText editTextUserName;
     private TextInputEditText editTextPassword;
     private Button buttonLogin;
     private ProgressBar progressBar;
     private TextView textView;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +77,6 @@ public class FragmentLogin extends Fragment {
                 if (TextUtils.isEmpty(password)) {
                     editTextPassword.setError("Enter password");
                     editTextPassword.requestFocus();
-//                   Toast.makeText(Login.this, "Enter password", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     return;
                 }
