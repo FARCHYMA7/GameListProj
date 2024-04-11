@@ -1,32 +1,27 @@
 package com.example.gameslist.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
 import com.example.gameslist.R;
 import com.example.gameslist.models.DataModel;
-import com.example.gameslist.services.DataService;
+import com.example.gameslist.services.GamesAPI;
+import com.example.gameslist.services.YoutubeAPI;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +33,7 @@ import java.util.ArrayList;
 
 public class FragmentOnClickedGame extends Fragment {
 
-    private TextView gameTitle, descTitle, desc, genreTitle, genre, publisherTitle, publisher, dateTitle, date, devTitle, dev;
+    private TextView gameTitle, desc, url, publisher, date, dev;
     private WebView webView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,59 +48,48 @@ public class FragmentOnClickedGame extends Fragment {
         View view = inflater.inflate(R.layout.fragment_on_clicked_game, container, false);
 
         gameTitle = view.findViewById(R.id.dialog_GameName);
-        descTitle = view.findViewById(R.id.dialog_titleDesc);
         desc = view.findViewById(R.id.dialog_gameDescription);
-        genreTitle = view.findViewById(R.id.dialog_titleGen);
-        genre = view.findViewById(R.id.dialog_genre);
-        publisherTitle = view.findViewById(R.id.dialog_titlePub);
+        url = view.findViewById(R.id.dialog_url);
         publisher = view.findViewById(R.id.dialog_publisher);
-        dateTitle = view.findViewById(R.id.dialog_titleDate);
         date = view.findViewById(R.id.dialog_date);
-        devTitle = view.findViewById(R.id.dialog_titleDev);
         dev = view.findViewById(R.id.dialog_dev);
         webView = view.findViewById(R.id.dialog_webView);
 
-        String game = getArguments().getString("gameName");
-        gameTitle.setText(game);
-        ArrayList<DataModel> localDataSet = DataService.getArrGames();
+        String title = getArguments().getString("gameName");
+        gameTitle.setText(title);
+        ArrayList<DataModel> localDataSet = GamesAPI.getArrGames();
         DataModel specificGame = localDataSet.get(0);
 
         for (DataModel dm : localDataSet) {
-            if (dm.getTitle().compareTo(game) == 0) { //searching the chosen game in the api dataSet
+            if (dm.getTitle().compareTo(title) == 0) { //searching the chosen game in the Games api dataSet
                 specificGame = dm;
                 break;
             }
         }
         try {
             desc.setText(specificGame.getShortDescription());
-            genre.setText(specificGame.getGenre());
+            date.setText(specificGame.getReleaseDate());
             publisher.setText(specificGame.getPublisher());
             dev.setText(specificGame.getDeveloper());
-            date.setText(specificGame.getReleaseDate());
+            url.setText(specificGame.getGameUrl());
+
         }
         catch (Exception e) {
             Toast.makeText(getActivity(), "List Error",
                     Toast.LENGTH_SHORT).show();
         }
 
+        url.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(String.valueOf(url.getText())));
+                startActivity(i);
 
-        String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", game);
+            }
+        });
 
-        try { //handling the youtube api to get the trailer of the specific game
-            URL url = new URL(sURL);
-            HttpURLConnection request = (HttpURLConnection) url.openConnection();
-            request.connect();
-
-            JsonParser jp = new JsonParser();
-            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent()));
-
-            JsonObject rootobj = root.getAsJsonObject();
-            JsonArray jsonArr = rootobj.get("items").getAsJsonArray();
-            JsonObject id = jsonArr.get(0).getAsJsonObject();
-            JsonObject idObj = id.get("id").getAsJsonObject();
-
-            String videoId = String.valueOf(idObj.get("videoId"));
-
+            String videoId = YoutubeAPI.getVideoID(title);
             WebSettings webSettings = webView.getSettings();
             webSettings.setJavaScriptEnabled(true); // Enable JavaScript
 
@@ -115,10 +99,5 @@ public class FragmentOnClickedGame extends Fragment {
 
             return view;
 
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

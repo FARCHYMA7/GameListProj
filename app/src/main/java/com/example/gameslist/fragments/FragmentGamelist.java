@@ -13,21 +13,17 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.gameslist.adapters.CustomeAdapter;
 import com.example.gameslist.models.DataModel;
 import com.example.gameslist.R;
-import com.example.gameslist.services.DataService;
+import com.example.gameslist.services.GamesAPI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class FragmentGamelist extends Fragment {
@@ -54,7 +50,7 @@ public class FragmentGamelist extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_gamelist, container, false);
 
-        localDataSet = DataService.getArrGames();
+        localDataSet = GamesAPI.getArrGames();
 
         assert getArguments() != null;
         search = getArguments().getString("search");
@@ -70,6 +66,12 @@ public class FragmentGamelist extends Fragment {
                 adapter = new CustomeAdapter(filtered, requireContext(), currentUser, "no");
             } else if (choice.compareTo("Name") == 0) {
                 ArrayList<DataModel> filtered = filterdName(localDataSet, search);
+                adapter = new CustomeAdapter(filtered, requireContext(), currentUser, "no");
+            } else if (choice.compareTo("Year") == 0) {
+                ArrayList<DataModel> filtered = filterdYear(localDataSet, search);
+                adapter = new CustomeAdapter(filtered, requireContext(), currentUser, "no");
+            } else if (choice.compareTo("Platform") == 0) {
+                ArrayList<DataModel> filtered = filterdPlatform(localDataSet, search);
                 adapter = new CustomeAdapter(filtered, requireContext(), currentUser, "no");
             }
         }
@@ -144,6 +146,36 @@ public class FragmentGamelist extends Fragment {
 
         return nonDupArray;
     }
+
+    public ArrayList<DataModel> filterdYear(ArrayList<DataModel> dataSet, String year) {
+        ArrayList<DataModel> filterd = new ArrayList<>();
+
+        for (DataModel i : dataSet) {
+            if (i.getReleaseDate().substring(0,4).compareTo(year) == 0)
+                filterd.add(i);
+        }
+
+        ArrayList<DataModel> nonDupArray;
+        nonDupArray = removeDuplicates(filterd);
+
+        return nonDupArray;
+    }
+
+    public ArrayList<DataModel> filterdPlatform(ArrayList<DataModel> dataSet, String Platform) {
+        ArrayList<DataModel> filterd = new ArrayList<>();
+
+        for (DataModel i : dataSet) {
+            if (i.getPlatform().compareTo(Platform) == 0)
+                filterd.add(i);
+        }
+
+        ArrayList<DataModel> nonDupArray;
+        nonDupArray = removeDuplicates(filterd);
+
+        return nonDupArray;
+    }
+
+
 
     public ArrayList<DataModel> filterdName(ArrayList<DataModel> dataSet, String title) {
         ArrayList<DataModel> filterd = new ArrayList<>();

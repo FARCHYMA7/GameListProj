@@ -16,7 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DataService {
+public class GamesAPI {
 
     private static ArrayList<DataModel> arrGames = new ArrayList<>();
 

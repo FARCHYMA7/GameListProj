@@ -5,10 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.gameslist.R;
-import com.example.gameslist.models.DataModel;
-import com.example.gameslist.services.DataService;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 

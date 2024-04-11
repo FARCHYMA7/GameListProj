@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:text="Short Description" />
 
@@ -38,27 +38,28 @@
         android:id="@+id/dialog_gameDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
         android:text="..."
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/dialog_titleGen"
+        android:id="@+id/dialog_titleDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="Genre:" />
+        android:text="Release Date:" />
 
     <TextView
-        android:id="@+id/dialog_genre"
+        android:id="@+id/dialog_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:text="..." />
 
 
@@ -85,11 +86,11 @@
         android:id="@+id/dialog_titleDev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Developer:"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="Developer:" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/dialog_dev"
@@ -101,31 +102,22 @@
 
 
     <TextView
-        android:id="@+id/dialog_titleDate"
+        android:id="@+id/dialog_titleUrl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:text="Release Date:"
+        android:text="For more info:"
         android:textSize="20sp"
         android:textStyle="bold" />
 
 
-
     <TextView
-        android:id="@+id/dialog_date"
+        android:id="@+id/dialog_url"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
         android:text="..." />
-
-
-
-
-
-
-
-
 
 </LinearLayout>
