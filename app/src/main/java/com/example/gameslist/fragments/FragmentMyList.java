@@ -114,7 +114,7 @@ public class FragmentMyList extends Fragment {
                     reference = FirebaseDatabase.getInstance().getReference("users");
                     reference.child(currentUser).child("dataSet").removeValue();
                     Toast.makeText(view.getContext(), "Go to your list to see the changes",
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                     Navigation.findNavController(view).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);
                 }
                 else if (id == R.id.logout) {

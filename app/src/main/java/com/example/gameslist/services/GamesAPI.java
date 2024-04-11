@@ -1,6 +1,7 @@
 package com.example.gameslist.services;
 
 import android.os.StrictMode;
+import android.util.Log;
 
 import com.example.gameslist.models.DataModel;
 import com.google.gson.JsonArray;
@@ -18,9 +19,11 @@ import java.util.ArrayList;
 
 public class GamesAPI {
 
-    private static ArrayList<DataModel> arrGames = new ArrayList<>();
+//    private static ArrayList<DataModel> arrGames = new ArrayList<>();
 
     public static ArrayList<DataModel> getArrGames() {
+
+        ArrayList<DataModel> arrGames = new ArrayList<>();
 
         String sURL = "https://www.freetogame.com/api/games";
 

@@ -121,7 +121,7 @@ public class CustomeAdapter extends RecyclerView.Adapter<CustomeAdapter.MyViewHo
 
                         try{
                             Toast.makeText(v.getContext(), "Go to your list to see the changes",
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                             Bundle bundle = new Bundle();
                             bundle.putString("username", currentUser);
                             Navigation.findNavController(v).navigate(R.id.action_fragmentMyList_to_fragmentGamelist2, bundle);

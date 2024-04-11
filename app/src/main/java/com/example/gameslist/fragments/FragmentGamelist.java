@@ -50,6 +50,7 @@ public class FragmentGamelist extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_gamelist, container, false);
 
+        localDataSet = new ArrayList<>();
         localDataSet = GamesAPI.getArrGames();
 
         assert getArguments() != null;
@@ -125,13 +126,8 @@ public class FragmentGamelist extends Fragment {
             {
                 filterd.add(i);
             }
-
         }
-
-        ArrayList<DataModel> nonDupArray;
-        nonDupArray = removeDuplicates(filterd);
-
-        return nonDupArray;
+        return filterd;
     }
 
     public ArrayList<DataModel> filterdDeveloper(ArrayList<DataModel> dataSet, String developer) {
@@ -140,11 +136,7 @@ public class FragmentGamelist extends Fragment {
             if (i.getDeveloper().compareTo(developer) == 0)
                 filterd.add(i);
         }
-
-        ArrayList<DataModel> nonDupArray;
-        nonDupArray = removeDuplicates(filterd);
-
-        return nonDupArray;
+        return filterd;
     }
 
     public ArrayList<DataModel> filterdYear(ArrayList<DataModel> dataSet, String year) {
@@ -154,11 +146,7 @@ public class FragmentGamelist extends Fragment {
             if (i.getReleaseDate().substring(0,4).compareTo(year) == 0)
                 filterd.add(i);
         }
-
-        ArrayList<DataModel> nonDupArray;
-        nonDupArray = removeDuplicates(filterd);
-
-        return nonDupArray;
+        return filterd;
     }
 
     public ArrayList<DataModel> filterdPlatform(ArrayList<DataModel> dataSet, String Platform) {
@@ -168,11 +156,7 @@ public class FragmentGamelist extends Fragment {
             if (i.getPlatform().compareTo(Platform) == 0)
                 filterd.add(i);
         }
-
-        ArrayList<DataModel> nonDupArray;
-        nonDupArray = removeDuplicates(filterd);
-
-        return nonDupArray;
+        return filterd;
     }
 
 
@@ -187,18 +171,6 @@ public class FragmentGamelist extends Fragment {
             }
 
         }
-
         return filterd;
     }
-
-    public ArrayList<DataModel> removeDuplicates(ArrayList<DataModel> dataSet) {
-        int size = dataSet.size();
-        ArrayList<DataModel> nonDupArray = new ArrayList<>();
-        for (int i = 0 ; i < size / 2 ; i++) {
-            nonDupArray.add(dataSet.get(i));
-        }
-
-        return nonDupArray;
-    }
-
 }

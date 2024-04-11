@@ -48,7 +48,7 @@ public class FragmentFilter extends Fragment {
         search_et = view.findViewById(R.id.search_et);
         search_btn = view.findViewById(R.id.search_btn);
         currentUser = getArguments().getString("username");
-        String[] items = new String[]{"Genre", "Developer", "Name"};
+        String[] items = new String[]{"Genre", "Year", "Platform", "Developer", "Name"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, items);
         spinnerGenre.setAdapter(adapter);
         bottomNavigationView = view.findViewById(R.id.bottomNavigationView3);
