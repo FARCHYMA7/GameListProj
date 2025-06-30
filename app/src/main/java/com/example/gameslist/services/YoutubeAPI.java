@@ -19,7 +19,7 @@ public class YoutubeAPI {
 
     public static String getVideoID(String title) {
 
-        String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key=AIzaSyCBQDLydJAXxlOoHGn7erzru4WhQ59EzVo", title);
+        String sURL = String.format("https://www.googleapis.com/youtube/v3/search?part=snippet&q=%s+trailer&key= ", title);
 
         try { //handling the youtube api to get the trailer of the specific game
             URL url = new URL(sURL);
